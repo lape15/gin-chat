@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Chat Box</title>
+    <link rel="stylesheet" href="/static/css/index.css">
+    <script>
+        let ws;
+
+
+        function connect() {
+            ws = new WebSocket("ws://localhost:4000/chat");
+
+            ws.onmessage = function (event) {
+                const { username, message } = JSON.parse(event.data);
+                console.log(username, message);
+                if (username === "User1") return;
+                let server = document.createElement("li");
+                server.className = "server";
+                // server.textContent = "🤖 AI: " + message;
+                server.textContent = `🤖 ${username}: ${message}`
+                document.getElementById("chat").appendChild(server);
+                console.log("📩 Received:", message);
+            };
+
+            ws.onopen = function () {
+                console.log("Connected to AI Chat");
+            };
+
+            ws.onclose = function () {
+                console.log("Disconnected");
+                setTimeout(connect, 10000);
+            };
+        }
+
+        function sendMessage() {
+            let message = document.getElementById("msg").value;
+            let userMsg = document.createElement("li");
+            userMsg.className = "user";
+            userMsg.textContent = "👤 You: " + message;
+            document.getElementById("chat").appendChild(userMsg);
+
+            let msgObj = { username: "User1", message: message };
+            ws.send(JSON.stringify(msgObj));
+            document.getElementById("msg").value = "";
+        }
+
+        window.onload = connect;
+    </script>
+</head>
+
+<body>
+    <h2>AI Chat</h2>
+    <input id="msg" type="text" placeholder="Type message...">
+    <button onclick="sendMessage()">Send</button>
+    <ul id="chat"></ul>
+</body>
+
+</html>

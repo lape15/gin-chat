@@ -1,0 +1,31 @@
+#msg {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+#chat {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-height: 70vh;
+  padding: 20px;
+}
+
+#chat li {
+  flex-basis: 45%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #08a0e9;
+  padding: 10px 20px;
+  text-wrap: balance;
+  list-style: none;
+}
+li.user {
+  align-self: flex-end;
+  color: #000;
+}
+li.server {
+  align-self: flex-start;
+  background: #26a7de;
+  color: white;
+}
